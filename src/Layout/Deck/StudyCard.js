@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useHistory, Link, useParams } from "react-router-dom";
-
+import React, { useState } from 'react'
+import { useHistory, Link, useParams } from 'react-router-dom'
+import { PropTypes } from 'prop-types'
 
 export default function StudyCard({ cards }) {
-  const initialState = { flipped: false, currentCard: 0 };
-  const [session, setSession] = useState(initialState);
-  const history = useHistory();
-  const { deckId } = useParams();
+  const initialState = { flipped: false, currentCard: 0 }
+  const [session, setSession] = useState(initialState)
+  const history = useHistory()
+  const { deckId } = useParams()
 
   // loop through the cards prop and prompt after last card
   const handleNext = () => {
@@ -15,44 +15,43 @@ export default function StudyCard({ cards }) {
         ...session,
         currentCard: session.currentCard + 1,
         flipped: false,
-      });
+      })
     } else {
       window.confirm(
-        'Restart cards? Click "cancel" to return to the home page.'
+        'Restart cards? \n \n \n Click "cancel" to return to the home page.'
       )
         ? setSession(initialState)
-        : history.push("/");
+        : history.push('/')
     }
-  };
+  }
 
   if (cards.length > 2) {
     return (
       <>
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">
+        <div className='card' style={{ width: '32rem' }}>
+          <div className='card-body'>
+            <h5 className='card-title'>
               Card {session.currentCard + 1} of {cards.length}
             </h5>
-            <p className="card-text">
+            <p className='card-text'>
               {session.flipped
                 ? cards[session.currentCard].back
                 : cards[session.currentCard].front}
             </p>
             <button
-              className="btn btn-secondary mr-2"
-              onClick={() => setSession({ ...session, flipped: true })}
-            >
+              className='btn btn-secondary mr-2'
+              onClick={() => setSession({ ...session, flipped: true })}>
               Flip
             </button>
             {session.flipped && (
-              <button className="btn btn-primary" onClick={handleNext}>
+              <button className='btn btn-primary' onClick={handleNext}>
                 Next
               </button>
             )}
           </div>
         </div>
       </>
-    );
+    )
   } else {
     return (
       <>
@@ -62,11 +61,15 @@ export default function StudyCard({ cards }) {
           this deck
         </p>
         <Link to={`/decks/${deckId}/cards/new`}>
-          <button className="btn btn-primary">
-            Add Cards
+          <button className='btn btn-primary'>
+            <i className='bi bi-plus'> Add Cards</i>
           </button>
         </Link>
       </>
-    );
+    )
   }
+}
+
+StudyCard.propTypes = {
+  cards: PropTypes.array,
 }
